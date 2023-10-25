@@ -1,6 +1,6 @@
 {
-  "name": "rex-strap",
-  "version": "1.0.0",
+  "name": "rex-create-wp-plugin",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
