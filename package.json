@@ -1,0 +1,28 @@
+{
+  "name": "rex-strap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "del": "^5.0.0",
+    "figlet-promised": "^1.0.0",
+    "fs-extra": "^7.0.1",
+    "inquirer": "^8.2.6",
+    "node-emoji": "^1.8.1",
+    "ora": "^3.0.0",
+    "promisify-child-process": "^2.1.2",
+    "prompt-sync": "^4.1.6",
+    "replace-in-file": "^3.4.2",
+    "yargs": "^15.0.0"
+  },
+  "bin": {
+    "rex-strap": "bin/index.js"
+  }
+}
