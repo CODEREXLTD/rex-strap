@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CODEREXLTD/rex-strap.git"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -24,5 +27,12 @@
   },
   "bin": {
     "rex-strap": "bin/index.js"
-  }
+  },
+  "keywords": [
+    "wordpress",
+    "workflow",
+    "boilerplate",
+    "setup",
+    "plugin"
+  ]
 }
