@@ -84,6 +84,8 @@ class Scanner {
 
         const composerFile     = path.join( projectPath, 'composer.json' );
         const pathEntryFile    = path.join( projectPath, `the-plugin-name.php` );
+        const gruntFile        = path.join( projectPath, `Gruntfile.js` );
+        const phpUnitBootstrapFile = path.join( projectPath, 'tests', 'phpunit', 'bootstrap.php' );
 
         // PHP Files
         if ( data.projectName && data.description && data.url && data.package &&
@@ -255,6 +257,29 @@ class Scanner {
             fs.rename( TranslationFile, path.join( projectPath, 'languages', `${ data.package }.pot` ) );
         }
 
+
+        /**
+         * Replace on Grunt file
+         */
+        await this.replacer(
+            gruntFile, /the-plugin-name-text-domain/g, `${data.package}`, projectPath
+        );
+        await this.replacer(
+            gruntFile, /the-plugin-name-text-domain.pot/g, `${data.package}.pot`, projectPath
+        );
+        await this.replacer(
+            gruntFile, /{{the-plugin-name}}/g, `${data.package}`, projectPath
+        );
+        await this.replacer(  // Plugin url used in main file meta as "Plugin URI" for example
+            gruntFile, /{{plugin_url}}/g, `https://${ data.url }`, projectPath
+        );
+        await this.replacer(  // Plugin author email used in PHP doc @author for example
+            gruntFile, /{{author_email}}/g, `${ data.authorEmail }`, projectPath
+        );
+
+        await this.replacer( 
+            phpUnitBootstrapFile, /rex_plugin_boilerplate/g, `${ data.package }`, projectPath
+        );
     }
 
 }
