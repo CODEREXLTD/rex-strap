@@ -75,7 +75,8 @@ class Scanner {
             path.join( projectPath, 'includes', 'Databases', '**', '*.php' ),
             path.join( projectPath, 'includes', 'Hooks', '**', '*.php' ),
             path.join( projectPath, 'includes', 'Rest', '**', '*.php' ),
-            path.join( projectPath, 'includes', 'Setup', '**', '*.php' )
+            path.join( projectPath, 'includes', 'Setup', '**', '*.php' ),
+            path.join( projectPath, 'views', '**', '*.php' )
         ];
 
         const codesnifferFiles = [
@@ -85,7 +86,9 @@ class Scanner {
         const composerFile     = path.join( projectPath, 'composer.json' );
         const pathEntryFile    = path.join( projectPath, `the-plugin-name.php` );
         const gruntFile        = path.join( projectPath, `Gruntfile.js` );
+        const packageFile      = path.join( projectPath, `package.json` );
         const phpUnitBootstrapFile = path.join( projectPath, 'tests', 'phpunit', 'bootstrap.php' );
+        const jsFiles            = path.join( projectPath, '**', '*.js' );
 
         // PHP Files
         if ( data.projectName && data.description && data.url && data.package &&
@@ -105,9 +108,6 @@ class Scanner {
             await this.replacer(  // Package name used in PHP doc @package for example
                 phpFiles, /{{the-plugin-name}}/g, `${ data.package }`, projectPath
             );
-            await this.replacer(  // Package name used in the webpack package.json in the translate script
-                phpFiles, /{{the-project-name}}/g, `${ data.package }`, projectPath
-            );
             await this.replacer(  // Plugin author used in PHP doc @author for example
                 phpFiles, /{{author_name}}/g, `${ data.author }`, projectPath
             );
@@ -126,6 +126,12 @@ class Scanner {
             await this.replacer(  // Plugin license used in PHP doc @licence for example
                 phpFiles, /{{author_license}}/g, `${ data.license }`, projectPath
             );
+            await this.replacer(  // Plugin slug name
+                phpFiles, /{{plugin_name_slug}}/g, `${ data.package }`, projectPath
+            );
+            await this.replacer(  // Plugin slug name
+                phpFiles, /{{the-plugin-name}}/g, `${ data.package }`, projectPath
+            );
 
             /**
              * Plugin main class name
@@ -133,6 +139,19 @@ class Scanner {
             await this.replacer(
                 phpFiles, /ThePluginName/g, `${ data.namespace }`, projectPath
             );
+
+            /**
+             * Replace plugin name on JS files
+             */
+            await this.replacer(
+                jsFiles, /{{the-plugin-name}}/g, `${ data.package }`, projectPath
+            );
+
+            if ('vue' === data.framework) {
+                await this.replacer(
+                    phpFiles, /$this->container['assets']   = new RexTheme\ThePluginName\Assets\LoadAssets();/g, ``, projectPath
+                );
+            }
 
 
             /**
@@ -143,6 +162,10 @@ class Scanner {
             );
             await this.replacer(  // Namespace called in various occurrences
                 phpFiles, /ThePluginName\\/g, `${ data.namespace + '\\' }`, projectPath
+            );
+
+            await this.replacer(  // Package name used in the webpack package.json in the translate script
+                packageFile, /{{the-plugin-name}}/g, `${ data.package }`, projectPath
             );
 
 
@@ -171,7 +194,7 @@ class Scanner {
              * Rest api class map
              */
             await this.replacer(
-                phpFiles, /plugin_name_rest_api_class_map/g, `${ data.prefix + '_rest_api_class_map ' }`, projectPath
+                phpFiles, /plugin_name_rest_api_class_map/g, `${ data.package + '_rest_api_class_map ' }`, projectPath
             );
 
             /**

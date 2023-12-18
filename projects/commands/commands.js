@@ -72,6 +72,12 @@ exports.handler = async ( argv ) => {
     } );
     terminal.setNextStep();
 
+
+    await terminal.install( {
+        describe: `${ terminal.step }. Operator is preparing ${promptedInfo.framework} setup`,
+        event:    operator.clean( promptedInfo.framework, projectPath ),
+    } );
+
     /**
      * Replacing plugin data
      * and set next step
@@ -83,6 +89,8 @@ exports.handler = async ( argv ) => {
     terminal.setNextStep();
 
     
+    
+
 
     /**
      * Install composer dependencies
@@ -115,7 +123,11 @@ exports.handler = async ( argv ) => {
     log.message( '' );
     log.message( `You will find a new plugin in your plugin folder. Navigate to that folder and run the following command:` );
     log.message( 'npm install' );
-    log.message( 'npm run production' );
+    if('react' === promptedInfo.framework) {
+        log.message( 'npm start' );
+    } else {
+        log.message( 'npm run production' );
+    }
     log.message( '' );
     log.message( '' );
     log.message( `You can activate the plugin in WordPress and work on it straight away. Good luck!` );

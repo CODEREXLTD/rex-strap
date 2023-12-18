@@ -120,6 +120,39 @@ class Operator {
         return exec( command, { timeout: this.getRepoTimeout } );
     }
 
+
+    /**
+     * Preparing the framework setup and remove unnecessary files
+     * 
+     * @param {*} framework 
+     * @param {*} projectPath 
+     */
+    async clean( framework, projectPath ) {
+        if ('react' === framework) {
+            await del( join( projectPath, 'vite.config.js' ) );
+            await exec( `cd "${ projectPath }" && cp package.json.react package.json` ); 
+            await exec( `cd "${ projectPath }" && mv src-react src` ); 
+            await exec( `cd "${ projectPath }/includes/Admin" && cp Menu.react.php Menu.php` ); 
+            await exec( `cd "${ projectPath }/includes/Assets" && cp LoadAssets-react.php LoadAssets.php` ); 
+            await del( join( `${projectPath}/includes/Assets`, 'Vite.php' ) );
+            await del( join( projectPath, 'src-vue' ) );
+
+        } else if ('vue' === framework ) {
+            await del( join( projectPath, 'webpack.config.js' ) );
+            await exec( `cd "${ projectPath }" && cp package.json.vue package.json` ); 
+            await exec( `cd "${ projectPath }" && mv src-vue src` ); 
+            await exec( `cd "${ projectPath }/includes/Admin" && cp Menu.vue.php Menu.php` ); 
+            await exec( `cd "${ projectPath }/includes/Assets" && cp LoadAssets-vue.php LoadAssets.php` ); 
+            await del( join( projectPath, 'src-react' ) );
+        } 
+        await del( join( projectPath, 'package.json.vue' ) );
+        await del( join( projectPath, 'package.json.react' ) );
+        await del( join( `${projectPath}/includes/Assets`, 'LoadAssets-react.php' ) );
+        await del( join( `${projectPath}/includes/Assets`, 'LoadAssets-vue.php' ) );
+        await del( join( `${projectPath}/includes/Admin`, 'Menu.vue.php' ) );
+        await del( join( `${projectPath}/includes/Admin`, 'Menu.react.php' ) );
+    }
+
     /**
      * Install task
      * @param what

@@ -50,6 +50,13 @@ const Questions = {
         default:  'coderex.co',
         describe: 'The author url without https:// (e.g. coderex.co):',
     },
+    framework: {
+        name:     'framework',
+        describe: 'Use React or Vue?',
+        type:     'list',
+        yesNo:    true,
+        choices:  [ 'react', 'vue' ]
+    },
     // Used for composer.json
     vendor: {
         type:      'text',
