@@ -76,19 +76,22 @@ class Scanner {
             path.join( projectPath, 'includes', 'Hooks', '**', '*.php' ),
             path.join( projectPath, 'includes', 'Rest', '**', '*.php' ),
             path.join( projectPath, 'includes', 'Setup', '**', '*.php' ),
-            path.join( projectPath, 'views', '**', '*.php' )
+            path.join( projectPath, 'views', '**', '*.php' ),
+            path.join( projectPath, 'bin', '**', '*.sh' ),
         ];
 
         const codesnifferFiles = [
             path.join( projectPath, 'phpcs.xml' ),
         ];
 
-        const composerFile     = path.join( projectPath, 'composer.json' );
-        const pathEntryFile    = path.join( projectPath, `the-plugin-name.php` );
-        const gruntFile        = path.join( projectPath, `Gruntfile.js` );
-        const packageFile      = path.join( projectPath, `package.json` );
-        const phpUnitBootstrapFile = path.join( projectPath, 'tests', 'phpunit', 'bootstrap.php' );
-        const jsFiles            = path.join( projectPath, '**', '*.js' );
+        const composerFile          = path.join( projectPath, 'composer.json' );
+        const pathEntryFile         = path.join( projectPath, `the-plugin-name.php` );
+        const gruntFile             = path.join( projectPath, `Gruntfile.js` );
+        const packageFile           = path.join( projectPath, `package.json` );
+        const phpUnitBootstrapFile  = path.join( projectPath, 'tests', 'phpunit', 'bootstrap.php' );
+        const jsFiles               = path.join( projectPath, '**', '*.js' );
+        const shFiles               = path.join( projectPath, '**', '*.sh' );
+        const ymlFiles              = path.join( projectPath, '**', '*.yml' );
 
         // PHP Files
         if ( data.projectName && data.description && data.url && data.package &&
@@ -153,7 +156,26 @@ class Scanner {
                 );
             }
 
+            /**
+             * Replace plugin name on sh files
+             */
+            await this.replacer(
+                shFiles, /{{the-plugin-name}}/g, `${ data.package }`, projectPath
+            );
 
+            await this.replacer(
+                shFiles, /{{The Plugin Name}}/g, `${ data.projectName }`, projectPath
+            );
+
+
+            /**
+             * Replace plugin name on yml file
+             */
+            await this.replacer(
+                ymlFiles, /{{the-plugin-name}}/g, `${ data.package }`, projectPath
+            );
+
+            
             /**
              * Namespace
              */
