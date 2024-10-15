@@ -86,11 +86,12 @@ class Scanner {
 
         const composerFile          = path.join( projectPath, 'composer.json' );
         const pathEntryFile         = path.join( projectPath, `the-plugin-name.php` );
+        const gruntFile             = path.join( projectPath, `Gruntfile.js` );
         const packageFile           = path.join( projectPath, `package.json` );
         const phpUnitBootstrapFile  = path.join( projectPath, 'tests', 'phpunit', 'bootstrap.php' );
         const jsFiles               = path.join( projectPath, '**', '*.js' );
         const shFiles               = path.join( projectPath, '**', '*.sh' );
-        const ymlFiles              = path.join( projectPath, '.github', '**', '*.yml');
+        const ymlFiles              = path.join( projectPath, '**', '*.yml' );
 
         // PHP Files
         if ( data.projectName && data.description && data.url && data.package &&
